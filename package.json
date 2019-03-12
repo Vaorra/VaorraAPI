@@ -1,0 +1,25 @@
+{
+  "name": "vaorraapi",
+  "version": "0.0.1",
+  "description": "API for Vaorra systems.",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaorra/VaorraAPI.git"
+  },
+  "keywords": [
+    "Vaorra"
+  ],
+  "author": "Vaorra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vaorra/VaorraAPI/issues"
+  },
+  "homepage": "https://github.com/Vaorra/VaorraAPI#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
