@@ -1,6 +1,8 @@
 import express from "express";
 import { MongoClient, Db, Collection, ObjectId, WriteOpResult } from "mongodb";
+//@ts-ignore
 import * as apiconfig from "./apiConfig.json";
+//@ts-ignore
 import * as access from "./access.json";
 import moment = require("moment");
 import assert = require("assert");
