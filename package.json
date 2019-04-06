@@ -1,0 +1,33 @@
+{
+  "name": "vaorraapi",
+  "version": "0.0.1",
+  "description": "API for Vaorra systems.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaorra/VaorraAPI.git"
+  },
+  "keywords": [
+    "Vaorra"
+  ],
+  "author": "Vaorra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vaorra/VaorraAPI/issues"
+  },
+  "homepage": "https://github.com/Vaorra/VaorraAPI#readme",
+  "dependencies": {
+    "@types/express": "^4.16.1",
+    "@types/mongodb": "^3.1.22",
+    "@types/node": "^11.13.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "mongodb": "^3.2.2",
+    "typescript": "^3.4.1"
+  }
+}
