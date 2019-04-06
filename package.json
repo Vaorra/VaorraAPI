@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node index.js",
-    "start-save": "npm i && tsc && node index.js"
+    "start-safe": "npm i && tsc && node index.js"
   },
   "repository": {
     "type": "git",
