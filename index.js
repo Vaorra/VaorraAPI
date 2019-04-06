@@ -21,43 +21,111 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongodb_1 = require("mongodb");
 const apiconfig = __importStar(require("./apiConfig.json"));
+const access = __importStar(require("./access.json"));
+const assert = require("assert");
+const bodyParser = require("body-parser");
 const app = express_1.default();
-const client = new mongodb_1.MongoClient(apiconfig.mongoUrl, {
-    useNewUrlParser: true
+const client = new mongodb_1.MongoClient(apiconfig.mongoUrl, { useNewUrlParser: true });
+let db;
+client.connect((err) => {
+    assert.equal(null, err);
+    db = client.db("VaorraJS");
 });
-app.get("/api/:object", (req, res) => {
-    console.log("BOT");
+const authentication = (req, res, next) => {
+    let user = req.headers["x-access-user"];
+    let token = req.headers["x-access-token"];
+    user = user ? user.toString() : undefined;
+    token = token ? token.toString() : undefined;
+    if (!user) {
+        res.status(401).send("No user provided in the header");
+    }
+    else if (!token) {
+        res.status(401).send("No token provided in the header");
+    }
+    else if (!access[user] || access[user] !== token) {
+        res.status(403).send("Invalid username and/or token");
+    }
+    else {
+        next();
+    }
+};
+app.use(authentication);
+app.use(bodyParser.json());
+app.get("/api/:object/all", (req, res) => __awaiter(this, void 0, void 0, function* () {
     mongodb(req.params["object"], (collection) => __awaiter(this, void 0, void 0, function* () {
         if (collection !== undefined) {
-            let result = yield collection.find().toArray();
-            res.send(result);
+            collection.find().toArray().then((result) => {
+                res.send(result);
+            });
         }
         else {
-            res.sendStatus(404);
+            res.status(404).send("Data collection not found");
         }
     }));
-});
-app.get("/api/:object/:id", (req, res) => {
+}));
+app.get("/api/:object/get/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
     mongodb(req.params["object"], (collection) => __awaiter(this, void 0, void 0, function* () {
         if (collection !== undefined) {
-            let result = yield collection.find({ "_id": req.params["id"] }).toArray();
+            let result = yield collection.find({ "_id": new mongodb_1.ObjectId(req.params["id"]) }).toArray();
             if (result.length > 0) {
                 res.send(result[0]);
-                return;
             }
         }
-        res.sendStatus(404);
+        else {
+            res.status(404).send("Data collection not found");
+        }
     }));
-});
+}));
+app.post("/api/:object/create", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    mongodb(req.params["object"], (collection) => __awaiter(this, void 0, void 0, function* () {
+        if (collection !== undefined) {
+            collection.insert(req.body, (err, result) => {
+                if (err !== null) {
+                    res.status(400).send("Insertion failed");
+                }
+                else {
+                    res.status(200).send();
+                }
+            });
+        }
+        else {
+            res.status(404).send("Data collection not found");
+        }
+    }));
+}));
+app.put("/api/:object/update/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    mongodb(req.params["object"], (collection) => __awaiter(this, void 0, void 0, function* () {
+        if (collection !== undefined) {
+            delete req.body["_id"];
+            collection.updateOne({ "_id": new mongodb_1.ObjectId(req.params["id"]) }, { $set: req.body }).then((result) => {
+                res.status(200).send();
+            }).catch((error) => {
+                console.log(error);
+                res.status(400).send("Update failed");
+            });
+        }
+        else {
+            res.status(404).send("Data collection not found");
+        }
+    }));
+}));
+app.delete("/api/:object/delete/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    mongodb(req.params["object"], (collection) => __awaiter(this, void 0, void 0, function* () {
+        if (collection !== undefined) {
+            collection.deleteOne({ "_id": new mongodb_1.ObjectId(req.params["id"]) }, req.body);
+            res.status(200).send();
+        }
+        else {
+            res.status(404).send("Data collection not found");
+        }
+    }));
+}));
 const mongodb = (coll, operation) => {
     client.connect((err) => {
-        const db = client.db("VaorraJS");
         db.collections().then((collections) => {
-            operation(collections.find((collection) => collection.collectionName === coll)).then(() => {
-                client.close();
-            });
+            operation(collections.find((collection) => collection.collectionName === coll));
         }).catch((error) => {
-            console.log("ERROR: " + error);
+            console.log(error);
         });
     });
 };
