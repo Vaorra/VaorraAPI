@@ -21,9 +21,6 @@ const authentication = (req: express.Request, res: express.Response, next: NextF
     let user = req.headers["x-access-user"];
     let token = req.headers["x-access-token"];
 
-    user = user ? user.toString() : undefined;
-    token = token ? token.toString() : undefined;
-
     if (!user) {
         res.status(401).send("No user provided in the header");
     }
@@ -32,7 +29,7 @@ const authentication = (req: express.Request, res: express.Response, next: NextF
         res.status(401).send("No token provided in the header");
     }
 
-    else if (!access[user] || access[user] !== token) {
+    else if (!access[user.toString()] || access[user.toString()] !== token) {
         res.status(403).send("Invalid username and/or token");
     }
 
