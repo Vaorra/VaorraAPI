@@ -64,6 +64,9 @@ app.get("/api/:object/get/:id", async (req, res) => {
             if (result.length > 0) {
                 res.send(result[0]);
             }
+            else {
+                res.status(404).send("Document could not be found")
+            }
         }
         else {
             res.status(404).send("Data collection not found");
@@ -76,7 +79,7 @@ app.post("/api/:object/create", async (req, res) => {
         if (collection !== undefined) {
             collection.insert(req.body, (err, result) => {
                 if (err !== null) {
-                    res.status(400).send("Insertion failed");
+                    res.status(400).send("Document could not be inserted");
                 }
                 else{
                     res.status(200).send();
@@ -97,7 +100,7 @@ app.put("/api/:object/update/:id", async (req, res) => {
                 res.status(200).send();
             }).catch((error) => {
                 console.log(error);
-                res.status(400).send("Update failed");
+                res.status(400).send("Document could not be updated");
             });
         }
         else {
