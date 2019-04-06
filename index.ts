@@ -59,10 +59,10 @@ app.get("/api/:object/all", async (req, res) => {
 app.get("/api/:object/get/:id", async (req, res) => {
     mongodb(req.params["object"], async (collection: Collection) => {
         if (collection !== undefined) {
-            let result = await collection.find({"_id": new ObjectId(req.params["id"])}).toArray();
+            let result = await collection.findOne({"_id": new ObjectId(req.params["id"])});
             
-            if (result.length > 0) {
-                res.send(result[0]);
+            if (result !== null) {
+                res.send(result);
             }
             else {
                 res.status(404).send("Document could not be found")
@@ -77,12 +77,12 @@ app.get("/api/:object/get/:id", async (req, res) => {
 app.post("/api/:object/create", async (req, res) => {
     mongodb(req.params["object"], async (collection: Collection) => {
         if (collection !== undefined) {
-            collection.insert(req.body, (err, result) => {
+            collection.insertOne(req.body, (err, result) => {
                 if (err !== null) {
                     res.status(400).send("Document could not be inserted");
                 }
                 else{
-                    res.status(200).send();
+                    res.status(200).send(result.insertedId.toHexString());
                 }
             });
         }
