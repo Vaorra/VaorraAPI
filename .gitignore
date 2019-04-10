@@ -1,0 +1,5 @@
+node_modules/
+.vscode/*
+apiConfig.json
+access.json
+*.js
