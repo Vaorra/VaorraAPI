@@ -103,7 +103,7 @@ app.post("/api/:object/create", async (req, res) => {
                     res.status(400).send("Document could not be inserted");
                 }
                 else{
-                    res.status(200).send(mongoIdToDiscordId(result.insertedId.toHexString()));
+                    res.status(200).send({"_id": mongoIdToDiscordId(result.insertedId.toHexString())});
                 }
             });
         }
