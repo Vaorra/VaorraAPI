@@ -1,0 +1,35 @@
+{
+  "name": "vaorraapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaorra/VaorraAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vaorra/VaorraAPI/issues"
+  },
+  "homepage": "https://github.com/Vaorra/VaorraAPI#readme",
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.17.1",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/moment": "^2.13.0",
+    "@types/mongoose": "^5.5.32",
+    "@types/node": "^12.12.11",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12"
+  }
+}
