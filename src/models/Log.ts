@@ -4,11 +4,11 @@ let Log = new Schema({
     type: {
         type: String
     },
-    message: {
+    source: {
         type: String
     },
-    date: {
-        type: Date
+    message: {
+        type: String
     }
 }, { collection: "Logs", timestamps: true });
 

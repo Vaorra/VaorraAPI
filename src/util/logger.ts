@@ -14,14 +14,19 @@ const statement = {
     ERROR: {name: "ERROR", color: colorCodes.FgRed}
 };
 
-const log = (statement:{name:String, color:String}, message:String) => {
+const source = {
+    API: {name: "VaorraAPI"},
+    Mebuta: {name: "VaorraMebuta"}
+}
+
+const log = (statement:{name:String, color:String}, message:String, source:{name:String}) => {
     console.log(`[${statement.color}${statement.name}${colorCodes.Reset}]\t${moment().format("YYYY-MM-DD HH:mm:ss")} ${colorCodes.FgGreen}»${colorCodes.Reset} ${message}`);
     let log = new Log({
         type: statement.name,
-        message: message,
-        date: moment().format("YYYY-MM-DD HH:mm:ss")
+        source: source.name,
+        message: message
     });
     log.save();
 };
 
-export { log, statement };
+export { log, statement, source };
